@@ -7,7 +7,7 @@ env = os.environ
 
 
 class Config:
-    SQLALCHEMY_URI = f"postgresql://{env['USERNAME']}:{env['PASSWORD']}@localhost:5432/{env['DATABASE']}"
+    SQLALCHEMY_URI = f"postgresql://{env['DB_USERNAME']}:{env['DB_PASSWORD']}@localhost:5432/{env['DATABASE']}"
 
 
 class DevelopmentConfig(Config):
