@@ -15,6 +15,9 @@ class Soldier(Base):
     commander = relationship("Soldier", remote_side=[name])
     department = relationship("Department", back_populates="slaves")
 
+    def __repr__(self):
+        return f'<Soldier: {self.name}, owner: {self.commander}>'
+
 
 class Department(Base):
     __tablename__ = "departments"
@@ -23,3 +26,6 @@ class Department(Base):
     name = Column(String, nullable=False)
 
     slaves = relationship("Soldier", back_populates="department")
+
+    def __repr__(self):
+        return f'<Department: {self.name}>'
