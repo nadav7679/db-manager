@@ -18,5 +18,5 @@ os.system(f"docker run --rm -d -e POSTGRES_USER={env_vars['DB_USERNAME']}"
 time.sleep(2)
 
 engine = create_engine(app_config[env].SQLALCHEMY_URI)
-print(app_config[env].SQLALCHEMY_URI)
 Base.metadata.create_all(bind=engine)
+from database import upload_data
