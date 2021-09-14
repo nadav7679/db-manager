@@ -1,12 +1,10 @@
 import names
 import random
-from sqlalchemy.orm import sessionmaker
 
-from database import engine
+
+from database import session
 from database.models import *
 
-Session = sessionmaker(bind=engine, future=True)
-session = Session()
 
 rand_departments = [
     "Dark Ancients",

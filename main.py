@@ -19,6 +19,6 @@ time.sleep(3)
 
 engine = create_engine(app_config[env].SQLALCHEMY_URI)
 Base.metadata.create_all(bind=engine)
-
+import database.upload_data
 # if __name__ == "__main__":
 #     uvicorn.run("api.app:app", host="0.0.0.0", reload=True, debug=True, workers=1, port=8000)

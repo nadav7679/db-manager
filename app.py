@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 
 from api.pydantic_model import *
+from database import session
+
 
 app = FastAPI()
-
 
 @app.get("/")
 def home():
@@ -17,6 +18,8 @@ def get_item(item_id: int):
 
 @app.post("/insert_soldier")
 def insert_soldier(soldier: SoldierMeta):
+    session.add(soldier.create_soldier())
+    session.commit()
     return soldier
 
 
