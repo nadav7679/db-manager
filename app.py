@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from api.pydantic_model import *
 from database import session
-
+from backend.classes import *
 
 app = FastAPI()
 
