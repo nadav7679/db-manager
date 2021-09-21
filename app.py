@@ -6,6 +6,7 @@ from backend.classes import *
 
 app = FastAPI()
 
+
 @app.get("/")
 def home():
     return {"Data": "NadavIsDaBest"}
@@ -29,8 +30,12 @@ def insert_department(dept: DepartmentMeta):
     session.commit()
     return dept
 
+
 @app.post("/get")
-def get(filter: Filter):
+def get(filter: GetFilter):
     get_instance = Get(filter)
+    # Send filter to backend
+    # Return error if caught
+    # Return JSON with data if checks out
     print(get_instance.tablename)
     return

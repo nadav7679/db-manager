@@ -5,6 +5,7 @@ from database.models import *
 
 tablenames = classnames.keys()
 
+
 class SoldierMeta(BaseModel):
     soldier_name: str
     soldier_department: str
@@ -34,15 +35,11 @@ class DepartmentMeta(BaseModel):
         return dept
 
 
-class Filter(BaseModel):
+class BaseFilter(BaseModel):
     tablename: Literal[tuple(tablenames)]
+
+
+class GetFilter(BaseFilter):
+    columns: Optional[conlist(str, min_items=1)] = None
     where: str
     order_by: Optional[conlist(str, min_items=1)] = None
-
-
-
-
-
-
-
-
