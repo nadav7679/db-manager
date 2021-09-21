@@ -1,8 +1,9 @@
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, Literal, Tuple
+from pydantic import BaseModel, conlist
 
 from database.models import *
 
+tablenames = classnames.keys()
 
 class SoldierMeta(BaseModel):
     soldier_name: str
@@ -31,3 +32,17 @@ class DepartmentMeta(BaseModel):
         )
 
         return dept
+
+
+class Filter(BaseModel):
+    tablename: Literal[tuple(tablenames)]
+    where: str
+    order_by: Optional[conlist(str, min_items=1)] = None
+
+
+
+
+
+
+
+

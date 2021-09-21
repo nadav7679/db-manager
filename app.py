@@ -25,4 +25,12 @@ def insert_soldier(soldier: SoldierMeta):
 
 @app.post("/insert_department")
 def insert_department(dept: DepartmentMeta):
+    session.add(dept.create_department())
+    session.commit()
     return dept
+
+@app.post("/get")
+def get(filter: Filter):
+    get_instance = Get(filter)
+    print(get_instance.tablename)
+    return
