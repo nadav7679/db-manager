@@ -1,4 +1,4 @@
-from typing import Optional, Literal, Tuple
+from typing import Optional, Literal
 from pydantic import BaseModel, conlist
 
 from database.models import *

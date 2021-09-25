@@ -1,31 +1,19 @@
 from fastapi import FastAPI
 
-from api.pydantic_model import *
+from database.pydantic_model import *
 from database import session
 from backend.classes import *
-from api.routes import soldier
+from api.routes import soldier, department
 
 
 app = FastAPI()
 
 app.include_router(soldier.router)
+app.include_router(department.router)
 
 @app.get("/")
 def home():
     return {"Data": "NadavIsDaBest"}
-
-
-@app.get("/get/{item_id}")
-def get_item(item_id: int):
-    return f"Your item id is: {item_id}"
-
-
-@app.post("/insert_department")
-def insert_department(dept: DepartmentMeta):
-    session.add(dept.create_department())
-    session.commit()
-    return dept
-
 
 @app.post("/get")
 def get(filter: GetFilter):
