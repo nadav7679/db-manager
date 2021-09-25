@@ -31,3 +31,6 @@ class Department(Base):
 
     def __repr__(self):
         return f'<Department: {self.name}, king: {self.king}>'
+
+
+classnames = {"soldiers": Soldier, "departments": Department}
