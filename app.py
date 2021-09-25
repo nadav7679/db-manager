@@ -3,9 +3,12 @@ from fastapi import FastAPI
 from api.pydantic_model import *
 from database import session
 from backend.classes import *
+from api.routes import soldier
+
 
 app = FastAPI()
 
+app.include_router(soldier.router)
 
 @app.get("/")
 def home():
@@ -15,13 +18,6 @@ def home():
 @app.get("/get/{item_id}")
 def get_item(item_id: int):
     return f"Your item id is: {item_id}"
-
-
-@app.post("/insert_soldier")
-def insert_soldier(soldier: SoldierMeta):
-    session.add(soldier.create_soldier())
-    session.commit()
-    return soldier
 
 
 @app.post("/insert_department")
