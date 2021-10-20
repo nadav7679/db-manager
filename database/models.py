@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, func
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -11,6 +11,7 @@ class Soldier(Base):
     name = Column(String, nullable=False, unique=True)
     department = Column(String, ForeignKey("departments.name"))
     commander = Column(String, ForeignKey("soldiers.name"))
+    entrenceDate = Column(DateTime(timezone=False), default=func.now())
     favorite_anime = Column(String)
 
     _commander = relationship("Soldier", remote_side=[name], foreign_keys=[commander])

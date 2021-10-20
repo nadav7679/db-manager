@@ -1,17 +1,15 @@
 from typing import Optional, Literal
 from pydantic import BaseModel, conlist
+from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 from database.models import *
 
 tablenames = classnames.keys()
 
+TempSoldierMeta = sqlalchemy_to_pydantic(Soldier)
+TempDepartmentMeta = sqlalchemy_to_pydantic(Department)
 
-class SoldierMeta(BaseModel):
-    soldier_name: str
-    soldier_department: str
-    soldier_commander: str
-    anime: Optional[str] = None
-
+class SoldierMeta(TempSoldierMeta):
     def create_soldier(self):
         slave = Soldier(name=self.soldier_name,
                         department=self.soldier_department,
@@ -22,10 +20,7 @@ class SoldierMeta(BaseModel):
         return slave
 
 
-class DepartmentMeta(BaseModel):
-    name: str
-    king: str
-
+class DepartmentMeta(TempDepartmentMeta):
     def create_department(self):
         dept = Department(
             name=self.name,
