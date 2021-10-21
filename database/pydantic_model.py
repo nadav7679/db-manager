@@ -1,9 +1,10 @@
-from typing import Optional, Literal
+from typing import Optional, Literal, Tuple, Dict, TypedDict, List, NamedTuple
 from pydantic import BaseModel, conlist
 
 from database.models import *
 
 tablenames = classnames.keys()
+schemanames = ["public", "test"]
 
 
 class SoldierMeta(BaseModel):
@@ -36,10 +37,18 @@ class DepartmentMeta(BaseModel):
 
 
 class BaseFilter(BaseModel):
-    tablename: Literal[tuple(tablenames)]
+    table: Literal[tuple(tablenames)]
+    schemaName: Literal[tuple(schemanames)]
+
+
+class OrderBy(TypedDict):
+    columns: conlist(str, min_items=1)
+    order: conlist(Literal[("desc", "asc")], min_items=1)
+# Make sure order length is exactly the order of columns!
 
 
 class GetFilter(BaseFilter):
     columns: Optional[conlist(str, min_items=1)] = None
-    where: str
-    order_by: Optional[conlist(str, min_items=1)] = None
+    where: Optional[str] = None
+    orderBy: Optional[OrderBy] = None
+    limit: Optional[int] = None
