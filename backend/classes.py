@@ -27,7 +27,21 @@ class Get:
             stmt = select_stmt.where(text(self.where))
 
         if self.orderBy is not None:
-            stmt = stmt.order_by()
+            order_map = {'asc': asc, 'desc': desc}
+            order_columns = self.orderBy['columns']
+            updown = self.orderBy['order']
+
+            if len(order_columns) != len(updown):
+                raise ValueError("In orderBy: Attributes 'columns' and 'order' lengths do not match.")
+
+            elif any([order not in order_map.keys() for order in updown]):
+                raise ValueError("In orderBy: One or more of the items in 'orderBy.order' are not in ['asc','desc']")
+
+            else:
+                order_num = len(order_columns)
+
+            params = [order_map[updown[i]](order_columns[i]) for i in range(order_num)]
+            stmt = stmt.order_by(*params)
 
         if self.limit is not None:
             stmt
@@ -39,10 +53,13 @@ class Get:
 
 soldier = Get({
     "schema": "public",
-    "table": "departments",
-    "columns": ["id", "name"],
-    "where": "departments.id > 5",
-    "orderBy": None,
+    "table": "soldiers",
+    "columns": ["department", "id"],
+    "where": "soldiers.id > 5",
+    "orderBy": {
+        "columns": ["department", "id"],
+        "order": ["asc", "desc"]
+    },
     "limit": None
 }
 )
