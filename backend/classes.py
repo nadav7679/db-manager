@@ -6,7 +6,7 @@ from sqlalchemy import select, text, desc, asc
 class Get:
 
     def __init__(self, filter):
-        self.schema = filter["schema"]
+        self.schema = filter["schemaName"]
         self.table = filter["table"]
         self.columns = filter["columns"]
         self.where = filter["where"]
@@ -48,11 +48,11 @@ class Get:
 
         print(stmt)
         res = session.execute(stmt)
-        print(res.fetchall())
+        return res
 
 
 soldier = Get({
-    "schema": "public",
+    "schemaName": "public",
     "table": "soldiers",
     "columns": ["department", "id"],
     "where": "soldiers.id > 5",
@@ -64,4 +64,4 @@ soldier = Get({
 }
 )
 
-soldier.get_data()
+# res = soldier.get_data()
