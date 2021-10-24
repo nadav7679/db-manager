@@ -37,6 +37,8 @@ def post(filter: PostFilter):
     filter = filter.dict()
     print(filter)
     post_instance = Post(filter)
+    res = post_instance.post_data()
+    return res
 
 
 if __name__ == '__main__':

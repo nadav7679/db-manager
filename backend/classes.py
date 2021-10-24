@@ -1,3 +1,4 @@
+import sqlalchemy.exc
 from sqlalchemy import select, text, desc, asc
 
 from database import session, models, pydantic_model
@@ -49,7 +50,10 @@ class Get:
             stmt = stmt.limit(self.limit)
 
         print(stmt)
-        res = session.execute(stmt)
+        try:
+            res = session.execute(stmt)
+        except sqlalchemy.exc.InternalError as e:
+            session.rollback()
         return res
 
 
@@ -67,9 +71,11 @@ class Post:
         model = model_meta(**self.data)
         row = model.create()
 
-
         session.add(row)
-        session.commit()
+        try:
+            session.commit()
+        except sqlalchemy.exc.InternalError as e:
+            session.rollback()
         return row
 
 soldier = Get({
@@ -86,7 +92,7 @@ soldier = Get({
 }
 )
 
-post = Post({
+post_sold = Post({
     "database": "postgres",
     "schemaName": "public",
     "table": "soldiers",
@@ -99,5 +105,16 @@ post = Post({
     },
 })
 
-# post.post_data()
+post_dept = Post({
+    "database": "db-manager",
+    "schemaName": "public",
+    "table": "departments",
+    "rowsCount": 1,
+    "data": {
+        "name": "TikTok",
+        "king": "whaeverrr",
+    },
+})
+
+# post_dept.post_data()
 # res = soldier.get_data()
