@@ -9,7 +9,7 @@ router = APIRouter(prefix="/soldiers", tags=["Soldiers"])
 
 @router.post("/create/")
 def create(soldier: SoldierMeta):
-    session.add(soldier.create_soldier())
+    session.add(soldier.create())
     session.commit()
     return soldier
 

@@ -5,19 +5,19 @@ from database.models import *
 
 tablenames = classnames.keys()
 schemanames = ["public", "test"]
-databases = ["postgres", "test"]
+databases = ["postgres", "test", "db-manager"]
 
 class SoldierMeta(BaseModel):
-    soldier_name: str
-    soldier_department: str
-    soldier_commander: str
-    anime: Optional[str] = None
+    name: str
+    department: str
+    commander: str
+    favorite_anime: Optional[str] = None
 
-    def create_soldier(self):
-        slave = Soldier(name=self.soldier_name,
-                        department=self.soldier_department,
-                        commander=self.soldier_commander,
-                        favorite_anime=self.anime
+    def create(self):
+        slave = Soldier(name=self.name,
+                        department=self.department,
+                        commander=self.commander,
+                        favorite_anime=self.favorite_anime
                         )
 
         return slave
@@ -27,7 +27,7 @@ class DepartmentMeta(BaseModel):
     name: str
     king: str
 
-    def create_department(self):
+    def create(self):
         dept = Department(
             name=self.name,
             king=self.king
@@ -59,3 +59,5 @@ class GetFilter(BaseFilter):
 class PostFilter(BaseFilter):
     rowsCount: Optional[int] = 1
     data: dict
+
+meta = {"soldiers": SoldierMeta, "departments": DepartmentMeta}

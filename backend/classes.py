@@ -1,6 +1,7 @@
-from database import session
-from database.models import classnames
 from sqlalchemy import select, text, desc, asc
+
+from database import session, models, pydantic_model
+from database.models import classnames
 
 
 class Get:
@@ -18,14 +19,14 @@ class Get:
 
         table = classnames[self.table]
         if self.columns is None:
-            select_stmt = select(table)
+            stmt = select(table)
 
         else:
             attr = [getattr(table, column) for column in self.columns]
-            select_stmt = select(*attr)
+            stmt = select(*attr)
 
         if self.where is not None:
-            stmt = select_stmt.where(text(self.where))
+            stmt = stmt.where(text(self.where))
 
         if self.orderBy is not None:
             order_map = {'asc': asc, 'desc': desc}
@@ -45,7 +46,7 @@ class Get:
             stmt = stmt.order_by(*params)
 
         if self.limit is not None:
-            stmt
+            stmt = stmt.limit(self.limit)
 
         print(stmt)
         res = session.execute(stmt)
@@ -58,12 +59,18 @@ class Post:
         self.database = filter["database"]
         self.schema = filter["schemaName"]
         self.table = filter["table"]
-        self.columns = filter["columns"]
-        self.where = filter["where"]
-        self.orderBy = filter["orderBy"]
-        self.limit = filter["limit"]
+        self.rowsCount = filter["rowsCount"]
+        self.data = filter["data"]
 
-    # def
+    def post_data(self):
+        model_meta = pydantic_model.meta[self.table]
+        model = model_meta(**self.data)
+        row = model.create()
+
+
+        session.add(row)
+        session.commit()
+        return row
 
 soldier = Get({
     "database": "postgres",
@@ -79,4 +86,18 @@ soldier = Get({
 }
 )
 
+post = Post({
+    "database": "postgres",
+    "schemaName": "public",
+    "table": "soldiers",
+    "rowsCount": 1,
+    "data": {
+        "name": "whaeverrr",
+        "department": "Wind Dragons",
+        "commander": "William Rogers",
+        "favorite_anime": "Banana Fish"
+    },
+})
+
+# post.post_data()
 # res = soldier.get_data()
