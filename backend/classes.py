@@ -6,6 +6,7 @@ from sqlalchemy import select, text, desc, asc
 class Get:
 
     def __init__(self, filter):
+        self.database = filter["database"]
         self.schema = filter["schemaName"]
         self.table = filter["table"]
         self.columns = filter["columns"]
@@ -51,7 +52,21 @@ class Get:
         return res
 
 
+class Post:
+
+    def __init__(self, filter):
+        self.database = filter["database"]
+        self.schema = filter["schemaName"]
+        self.table = filter["table"]
+        self.columns = filter["columns"]
+        self.where = filter["where"]
+        self.orderBy = filter["orderBy"]
+        self.limit = filter["limit"]
+
+    # def
+
 soldier = Get({
+    "database": "postgres",
     "schemaName": "public",
     "table": "soldiers",
     "columns": ["department", "id"],

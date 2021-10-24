@@ -5,7 +5,7 @@ from database.models import *
 
 tablenames = classnames.keys()
 schemanames = ["public", "test"]
-
+databases = ["postgres", "test"]
 
 class SoldierMeta(BaseModel):
     soldier_name: str
@@ -37,8 +37,9 @@ class DepartmentMeta(BaseModel):
 
 
 class BaseFilter(BaseModel):
-    table: Literal[tuple(tablenames)]
+    database: Literal[tuple(databases)]
     schemaName: Literal[tuple(schemanames)]
+    table: Literal[tuple(tablenames)]
 
 
 class OrderBy(TypedDict):
@@ -47,8 +48,14 @@ class OrderBy(TypedDict):
 # Make sure order length is exactly the order of columns!
 
 
+
 class GetFilter(BaseFilter):
     columns: Optional[conlist(str, min_items=1)] = None
     where: Optional[str] = None
     orderBy: Optional[OrderBy] = None
     limit: Optional[int] = None
+
+
+class PostFilter(BaseFilter):
+    rowsCount: Optional[int] = 1
+    data: dict
